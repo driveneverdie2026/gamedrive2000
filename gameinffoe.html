@@ -3,33 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tạo Thông Tin Game</title>
+  <title>Tạo & Lưu Thông Tin Game Lên GitHub</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
     body { background-color: #f4f6f8; color: #333; padding: 20px 12px; }
-    .container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    h2 { text-align: center; margin-bottom: 20px; color: #1a1a1a; font-size: 1.4rem; }
-    .section-title { font-weight: bold; margin: 16px 0 8px; color: #2563eb; border-bottom: 2px solid #eff6ff; padding-bottom: 4px; font-size: 1.05rem; }
-    label { display: block; margin-top: 10px; font-size: 0.9rem; font-weight: 600; color: #4b5563; }
-    input, select, textarea { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.95rem; }
-    input:focus { outline: none; border-color: #2563eb; }
+    .container { max-width: 650px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    h2 { text-align: center; margin-bottom: 20px; color: #1a1a1a; font-size: 1.3rem; }
+    .section-title { font-weight: bold; margin: 16px 0 8px; color: #2563eb; border-bottom: 2px solid #eff6ff; padding-bottom: 4px; font-size: 1rem; }
+    label { display: block; margin-top: 10px; font-size: 0.88rem; font-weight: 600; color: #4b5563; }
+    input, textarea { width: 100%; padding: 10px; margin-top: 4px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; }
+    textarea { resize: vertical; min-height: 90px; }
+    input:focus, textarea:focus { outline: none; border-color: #2563eb; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-group { display: flex; gap: 10px; margin-top: 24px; }
-    button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95rem; transition: background 0.2s; }
-    .btn-json { background-color: #2563eb; color: white; }
-    .btn-json:hover { background-color: #1d4ed8; }
-    .btn-txt { background-color: #059669; color: white; }
-    .btn-txt:hover { background-color: #047857; }
+    .btn-submit { width: 100%; padding: 14px; margin-top: 20px; border: none; border-radius: 8px; background-color: #2563eb; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; }
+    .btn-submit:hover { background-color: #1d4ed8; }
+    .status { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; text-align: center; font-size: 0.9rem; font-weight: 500; }
+    .status.success { background-color: #d1fae5; color: #065f46; display: block; }
+    .status.error { background-color: #fee2e2; color: #991b1b; display: block; }
+    .status.loading { background-color: #e0f2fe; color: #075985; display: block; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>TẠO THÔNG TIN GAME</h2>
+  <h2>TẠO GAME & LƯU TRỰC TIẾP LÊN GITHUB</h2>
 
   <form id="gameForm">
+    <!-- Cấu hình GitHub -->
+    <div class="section-title">1. Cấu hình GitHub</div>
+    <div class="grid-2">
+      <div>
+        <label>Tên tài khoản GitHub:</label>
+        <input type="text" id="ghOwner" placeholder="driveneverdie2026" required>
+      </div>
+      <div>
+        <label>Tên Repository:</label>
+        <input type="text" id="ghRepo" placeholder="gamedrive2000" required>
+      </div>
+    </div>
+    <label>GitHub Personal Access Token (PAT):</label>
+    <input type="password" id="ghToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required>
+    <small style="color: #6b7280; font-size: 0.75rem;">Token dùng để có quyền ghi file vào GitHub của bạn.</small>
+
     <!-- Thông tin chung -->
-    <div class="section-title">1. Thông tin chung</div>
+    <div class="section-title">2. Thông tin game</div>
     <label>Tên Game:</label>
     <input type="text" id="title" placeholder="VD: Cyberpunk 2077" required>
 
@@ -40,147 +57,124 @@
       </div>
       <div>
         <label>Thể loại:</label>
-        <input type="text" id="genre" placeholder="VD: Hành động, RPG">
+        <input type="text" id="genre" placeholder="Hành động, RPG">
       </div>
     </div>
 
     <div class="grid-2">
       <div>
         <label>Nhà phát triển:</label>
-        <input type="text" id="developer" placeholder="VD: CD Projekt Red">
+        <input type="text" id="developer">
       </div>
       <div>
         <label>Nhà phát hành:</label>
-        <input type="text" id="publisher" placeholder="VD: CD Projekt">
+        <input type="text" id="publisher">
       </div>
     </div>
 
-    <!-- Cấu hình tối thiểu -->
-    <div class="section-title">2. Cấu hình tối thiểu (Minimum)</div>
-    <div class="grid-2">
-      <div>
-        <label>Hệ điều hành:</label>
-        <input type="text" id="minOs" placeholder="Windows 10 64-bit">
-      </div>
-      <div>
-        <label>CPU:</label>
-        <input type="text" id="minCpu" placeholder="Intel Core i5-5675C">
-      </div>
-    </div>
-    <div class="grid-2">
-      <div>
-        <label>RAM:</label>
-        <input type="text" id="minRam" placeholder="8 GB">
-      </div>
-      <div>
-        <label>Card đồ họa (GPU):</label>
-        <input type="text" id="minGpu" placeholder="GTX 1060 (6GB)">
-      </div>
-    </div>
-    <label>Dung lượng ổ cứng:</label>
-    <input type="text" id="minStorage" placeholder="70 GB SSD">
+    <!-- Cấu hình (Copy dạng dòng) -->
+    <div class="section-title">3. Cấu hình PC</div>
+    <label>Cấu hình tối thiểu (Minimum):</label>
+    <textarea id="minReq" placeholder="Copy cả đoạn cấu hình dán vào đây...&#10;OS: Windows 10&#10;CPU: Intel Core i5...&#10;RAM: 8 GB"></textarea>
 
-    <!-- Cấu hình đề nghị -->
-    <div class="section-title">3. Cấu hình đề nghị (Recommended)</div>
-    <div class="grid-2">
-      <div>
-        <label>Hệ điều hành:</label>
-        <input type="text" id="recOs" placeholder="Windows 11 64-bit">
-      </div>
-      <div>
-        <label>CPU:</label>
-        <input type="text" id="recCpu" placeholder="Core i7-12700 / Ryzen 7 7800X3D">
-      </div>
-    </div>
-    <div class="grid-2">
-      <div>
-        <label>RAM:</label>
-        <input type="text" id="recRam" placeholder="16 GB">
-      </div>
-      <div>
-        <label>Card đồ họa (GPU):</label>
-        <input type="text" id="recGpu" placeholder="RTX 3080 (10GB)">
-      </div>
-    </div>
-    <label>Dung lượng ổ cứng:</label>
-    <input type="text" id="recStorage" placeholder="70 GB NVMe SSD">
+    <label>Cấu hình đề nghị (Recommended):</label>
+    <textarea id="recReq" placeholder="Copy cả đoạn cấu hình dán vào đây...&#10;OS: Windows 11&#10;CPU: Intel Core i7...&#10;RAM: 16 GB"></textarea>
 
-    <!-- Nút lưu -->
-    <div class="btn-group">
-      <button type="button" class="btn-json" onclick="exportData('json')">Tải file JSON</button>
-      <button type="button" class="btn-txt" onclick="exportData('txt')">Tải file TXT</button>
-    </div>
+    <button type="button" class="btn-submit" onclick="saveToGitHub()">Lưu File JSON Lên GitHub</button>
+    <div id="statusBox" class="status"></div>
   </form>
 </div>
 
 <script>
-  function getFormData() {
-    return {
-      title: document.getElementById('title').value || "Chưa đặt tên",
-      releaseDate: document.getElementById('releaseDate').value,
-      genre: document.getElementById('genre').value,
-      developer: document.getElementById('developer').value,
-      publisher: document.getElementById('publisher').value,
+  // Tự động khôi phục thông tin GitHub đã nhập trước đó
+  document.addEventListener("DOMContentLoaded", () => {
+    if(localStorage.getItem("gh_owner")) document.getElementById("ghOwner").value = localStorage.getItem("gh_owner");
+    if(localStorage.getItem("gh_repo")) document.getElementById("ghRepo").value = localStorage.getItem("gh_repo");
+    if(localStorage.getItem("gh_token")) document.getElementById("ghToken").value = localStorage.getItem("gh_token");
+  });
+
+  async function saveToGitHub() {
+    const owner = document.getElementById("ghOwner").value.trim();
+    const repo = document.getElementById("ghRepo").value.trim();
+    const token = document.getElementById("ghToken").value.trim();
+    const title = document.getElementById("title").value.trim();
+
+    const statusBox = document.getElementById("statusBox");
+
+    if (!owner || !repo || !token || !title) {
+      showStatus("Vui lòng nhập đủ: Tài khoản GitHub, Repo, Token và Tên Game!", "error");
+      return;
+    }
+
+    // Lưu lại thông tin GitHub vào máy để lần sau không phải nhập lại
+    localStorage.setItem("gh_owner", owner);
+    localStorage.setItem("gh_repo", repo);
+    localStorage.setItem("gh_token", token);
+
+    // Chuẩn bị dữ liệu JSON
+    const gameObject = {
+      title: title,
+      releaseDate: document.getElementById("releaseDate").value,
+      genre: document.getElementById("genre").value,
+      developer: document.getElementById("developer").value,
+      publisher: document.getElementById("publisher").value,
       requirements: {
-        minimum: {
-          os: document.getElementById('minOs').value,
-          cpu: document.getElementById('minCpu').value,
-          ram: document.getElementById('minRam').value,
-          gpu: document.getElementById('minGpu').value,
-          storage: document.getElementById('minStorage').value
-        },
-        recommended: {
-          os: document.getElementById('recOs').value,
-          cpu: document.getElementById('recCpu').value,
-          ram: document.getElementById('recRam').value,
-          gpu: document.getElementById('recGpu').value,
-          storage: document.getElementById('recStorage').value
-        }
+        minimum: document.getElementById("minReq").value,
+        recommended: document.getElementById("recReq").value
       }
     };
-  }
 
-  function downloadFile(content, fileName, contentType) {
-    const a = document.createElement("a");
-    const file = new Blob([content], { type: contentType });
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  }
+    const fileName = title.toLowerCase().replace(/[^a-z0-9]/g, "_") + ".json";
+    const filePath = `data/${fileName}`; // Lưu vào thư mục data/ tên_game.json
+    const jsonContent = JSON.stringify(gameObject, null, 2);
 
-  function exportData(format) {
-    const data = getFormData();
-    const safeTitle = data.title.toLowerCase().replace(/[^a-z0-9]/g, "_");
+    showStatus("Đang tải dữ liệu lên GitHub...", "loading");
 
-    if (format === 'json') {
-      const jsonStr = JSON.stringify(data, null, 2);
-      downloadFile(jsonStr, `${safeTitle}_info.json`, "application/json");
-    } else if (format === 'txt') {
-      const txtStr = 
-`===== THÔNG TIN GAME =====
-Tên game: ${data.title}
-Ngày phát hành: ${data.releaseDate}
-Thể loại: ${data.genre}
-Nhà phát triển: ${data.developer}
-Nhà phát hành: ${data.publisher}
+    try {
+      // 1. Kiểm tra xem file đã tồn tại chưa để lấy SHA (nếu có update)
+      let sha = null;
+      const getFileRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`, {
+        headers: { "Authorization": `token ${token}` }
+      });
+      if (getFileRes.ok) {
+        const fileData = await getFileRes.json();
+        sha = fileData.sha;
+      }
 
---- CẤU HÌNH TỐI THIỂU ---
-OS: ${data.requirements.minimum.os}
-CPU: ${data.requirements.minimum.cpu}
-RAM: ${data.requirements.minimum.ram}
-GPU: ${data.requirements.minimum.gpu}
-Ổ cứng: ${data.requirements.minimum.storage}
+      // 2. Chuyển nội dung JSON sang Base64 mã hóa UTF-8
+      const encoder = new TextEncoder();
+      const dataUint8 = encoder.encode(jsonContent);
+      const base64Content = btoa(String.fromCharCode(...dataUint8));
 
---- CẤU HÌNH ĐỀ NGHỊ ---
-OS: ${data.requirements.recommended.os}
-CPU: ${data.requirements.recommended.cpu}
-RAM: ${data.requirements.recommended.ram}
-GPU: ${data.requirements.recommended.gpu}
-Ổ cứng: ${data.requirements.recommended.storage}
-`;
-      downloadFile(txtStr, `${safeTitle}_info.txt`, "text/plain");
+      // 3. Đẩy file lên GitHub API
+      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `token ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: `Add/Update game: ${title}`,
+          content: base64Content,
+          sha: sha || undefined
+        })
+      });
+
+      if (response.ok) {
+        showStatus(` Thành công! Đã lưu file "${filePath}" lên GitHub.`, "success");
+      } else {
+        const errorData = await response.json();
+        showStatus(` Lỗi (${response.status}): ${errorData.message}`, "error");
+      }
+    } catch (err) {
+      showStatus(" Lỗi kết nối API: " + err.message, "error");
     }
+  }
+
+  function showStatus(msg, type) {
+    const statusBox = document.getElementById("statusBox");
+    statusBox.className = `status ${type}`;
+    statusBox.innerText = msg;
   }
 </script>
 
