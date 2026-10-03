@@ -1,15 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Đang chuyển hướng...</title>
-  <!-- Tự động chuyển hướng ngay lập tức -->
-  <meta http-equiv="refresh" content="0; url=https://thiendiahoi.xyz/">
-  <script type="text/javascript">
-    window.location.replace("https://thiendiahoi.xyz/");
+  <meta charset="UTF-8">
+  <title>Game Drive Redirect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 100px 20px;
+      background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+      color: #fff;
+      margin: 0;
+    }
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top: 4px solid #ff6b35;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <script>
+    // Lấy game ID từ URL
+    const params = new URLSearchParams(window.location.search);
+    const gameId = params.get('id');
+
+    // ===== DOMAIN CHÍNH - ĐỔI Ở ĐÂY KHI THAY DOMAIN =====
+    const MAIN_DOMAIN = 'https://thiendiahoi.xyz';
+    // Khi đổi domain, chỉ cần sửa dòng trên thành:
+    // const MAIN_DOMAIN = 'https://domain-moi.com';
+
+    if (gameId) {
+      // Redirect ngay về domain chính
+      window.location.href = `${MAIN_DOMAIN}/redirect.html?id=${gameId}`;
+    } else {
+      // Không có ID - báo lỗi
+      setTimeout(() => {
+        document.body.innerHTML = `
+          <div>
+            <h1 style="color:#e55;">❌ Link không hợp lệ</h1>
+            <p>Vui lòng sử dụng link từ trang game chính thức.</p>
+          </div>
+        `;
+      }, 1000);
+    }
   </script>
 </head>
 <body>
-  <p>Đang chuyển hướng đến trang web... Nếu trình duyệt không tự chuyển, <a href="https://thiendiahoi.xyz/">bấm vào đây</a>.</p>
+  <div class="spinner"></div>
+  <h2>Đang chuyển hướng...</h2>
+  <p>Vui lòng đợi trong giây lát...</p>
 </body>
 </html>
