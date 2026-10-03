@@ -31,16 +31,29 @@
     const params = new URLSearchParams(window.location.search);
     const gameId = params.get('id');
 
-    // ===== DOMAIN CHÍNH - ĐỔI Ở ĐÂY KHI THAY DOMAIN =====
-    const MAIN_DOMAIN = 'https://thiendiahoi.xyz';
-    // Khi đổi domain, chỉ cần sửa dòng trên thành:
-    // const MAIN_DOMAIN = 'https://domain-moi.com';
+    // ===== TỰ ĐỘNG PHÁT HIỆN MÔI TRƯỜNG =====
+    let MAIN_DOMAIN;
+
+    // Kiểm tra xem đang test local hay production
+    if (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1') {
+      // Đang test local
+      MAIN_DOMAIN = 'http://localhost:3000';
+    } else {
+      // Production - domain thật
+      MAIN_DOMAIN = 'https://thiendiahoi.xyz';
+
+      // KHI ĐỔI DOMAIN PRODUCTION, SỬA Ở ĐÂY:
+      // MAIN_DOMAIN = 'https://domain-moi.com';
+    }
 
     if (gameId) {
-      // Redirect ngay về domain chính
-      window.location.href = `${MAIN_DOMAIN}/redirect.html?id=${gameId}`;
+      // Redirect về domain chính
+      const redirectUrl = `${MAIN_DOMAIN}/redirect.html?id=${gameId}`;
+      console.log('Redirecting to:', redirectUrl);
+      window.location.href = redirectUrl;
     } else {
-      // Không có ID - báo lỗi
+      // Không có ID
       setTimeout(() => {
         document.body.innerHTML = `
           <div>
